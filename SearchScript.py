@@ -1,12 +1,15 @@
 #!/usr/bin/env/python
 import time
+import requests
+import json
+import random
 from selenium import webdriver
 
-driver_path = '$CHROME_DRIVER_PATH'
 
 def startWebDriver(user_agent):
     opts = webdriver.ChromeOptions()
     opts.add_argument("user-agent={}".format(user_agent))
+    driver_path = '$CHROME_DRIVER_PATH'
     driver = webdriver.Chrome(executable_path=driver_path,chrome_options=opts)
     return driver
 
@@ -39,12 +42,14 @@ def loginToRewards(driver, isMobile):
         confirmMobileSignIn(driver)
     
 def performSearches(num_to_search,base_url,driver):
-    ascii_start = 65
+    random_words_url = "https://www.randomlists.com/data/words.json"
+    response = requests.get(random_words_url)
+    word_list = response.json()['data']
+    start_idx= random.randint(0,2600)
+    print('start_idx is ' + str(start_idx))
     for i in range(num_to_search):
-        base_url = base_url + 'A' if i % 25 == 0 else base_url
-        letter = str(chr(ascii_start))
-        driver.get(base_url + letter)
-        ascii_start = ascii_start + 1
+        word = word_list[start_idx + i]
+        driver.get(base_url + word)
         time.sleep(1)
 
 
@@ -54,10 +59,10 @@ def completeDailySearches(user_agent,num_searches,base_url,isMobile):
     performSearches(num_searches,base_url,driver)
     driver.quit()
 
-base_url = 'https://www.bing.com/search?q=words'
+base_url = 'https://www.bing.com/search?q='
 edge_user_agent = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/52.0.2743.116 Safari/537.36 Edge/15.15063'
 num_pc_searches = 35
 android_user_agent = "Mozilla/5.0 (Android 6.0.1; Mobile; rv:63.0) Gecko/63.0 Firefox/63.0"
 num_mobile_searches = 25
-completeDailySearches(edge_user_agent,num_pc_searches,base_url + 'A',False);
-completeDailySearches(android_user_agent,num_mobile_searches,base_url + 'B',True);
+completeDailySearches(edge_user_agent,num_pc_searches,base_url,False);
+completeDailySearches(android_user_agent,num_mobile_searches,base_url,True);
