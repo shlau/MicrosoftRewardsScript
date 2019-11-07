@@ -40,11 +40,23 @@ def loginToRewards(driver, isMobile):
 
     if(isMobile):
         confirmMobileSignIn(driver)
-    
+
+def forceAlert(base_url, driver):
+    trigger_word = 'my location'
+    driver.get(base_url + trigger_word)
+    time.sleep(3)
+    try:
+        alert = driver.switch_to_alert()
+        alert.accept()
+    except:
+        print("No alert popup.")
+    time.sleep(3)
+
 def performSearches(num_to_search,base_url,driver):
     random_words_url = "https://www.randomlists.com/data/words.json"
     response = requests.get(random_words_url)
     word_list = response.json()['data']
+    forceAlert(base_url,driver)
     start_idx= random.randint(0,2600)
     print('start_idx is ' + str(start_idx))
     for i in range(num_to_search):
