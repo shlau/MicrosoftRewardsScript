@@ -38,8 +38,7 @@ def loginToRewards(driver, isMobile):
     actions = webdriver.ActionChains(driver)
     actions.move_to_element(login_button).click().perform()
 
-    if(isMobile):
-        confirmMobileSignIn(driver)
+    confirmMobileSignIn(driver)
 
 def forceAlert(base_url, driver):
     trigger_word = 'my location'
@@ -57,7 +56,7 @@ def performSearches(num_to_search,base_url,driver):
     response = requests.get(random_words_url)
     word_list = response.json()['data']
     forceAlert(base_url,driver)
-    start_idx= random.randint(0,2600)
+    start_idx= random.randint(0,1000)
     print('start_idx is ' + str(start_idx))
     for i in range(num_to_search):
         word = word_list[start_idx + i]
@@ -68,6 +67,7 @@ def performSearches(num_to_search,base_url,driver):
 def completeDailySearches(user_agent,num_searches,base_url,isMobile):
     driver = startWebDriver(user_agent)
     loginToRewards(driver,isMobile)
+    time.sleep(3)
     performSearches(num_searches,base_url,driver)
     driver.quit()
 
