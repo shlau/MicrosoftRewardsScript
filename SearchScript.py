@@ -13,14 +13,22 @@ def startWebDriver(user_agent):
     driver = webdriver.Chrome(executable_path=driver_path,chrome_options=opts)
     return driver
 
-def confirmMobileSignIn(driver):
+def confirmSignIn(driver, isMobile):
     time.sleep(5)
     driver.get('https://account.microsoft.com/rewards/pointsbreakdown')
     time.sleep(5)
-    driver.get('https://www.bing.com/rewards/signin?ru=https%3a%2f%2fwww.bing.com%2fsearch%3fq%3dpopular+now+on+bing%26filters%3dsegment%3a%22popularnow.carousel%22%26form%3dml10ns%26crea%3dml10ns&vt=Signin&ra=')
+    driver.get('https://www.bing.com')
     time.sleep(5)
-    driver.get('https://www.bing.com/fd/auth/signin?action=interactive&provider=windows_live_id&src=rewardssi&perms=&sig=0D1B6415EBC0646513956A1DEAE2659E&device=mobile&return_url=https%3a%2f%2fwww.bing.com%2frewards%2fsignin%3fru%3dhttps%253a%252f%252fwww.bing.com%252fsearch%253fq%253dpopular%2bnow%2bon%2bbing%2526filters%253dsegment%253a%2522popularnow.carousel%2522%2526form%253dml10ns%2526crea%253dml10ns%26vt%3dSignin%26ra%3d&Token=1')
-    time.sleep(5)
+    if(isMobile):
+        menu_btn = driver.find_element_by_css_selector('#mHamburger')
+        menu_btn.click()
+        time.sleep(2)
+    signin_btn = driver.find_element_by_css_selector('#hb_s' if isMobile else '#id_s')
+    try:
+        signin_btn.click()
+    except NoSuchElementException: 
+        print("No sign in button")
+    time.sleep(3)
 
 def loginToRewards(driver, isMobile):
     login_url = 'https://login.live.com'
@@ -38,7 +46,7 @@ def loginToRewards(driver, isMobile):
     actions = webdriver.ActionChains(driver)
     actions.move_to_element(login_button).click().perform()
 
-    confirmMobileSignIn(driver)
+    confirmSignIn(driver, isMobile)
 
 def forceAlert(base_url, driver):
     trigger_word = 'my location'
