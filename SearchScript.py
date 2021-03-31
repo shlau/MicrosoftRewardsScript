@@ -4,13 +4,13 @@ import requests
 import json
 import random
 from selenium import webdriver
-
+from selenium.common.exceptions import ElementNotInteractableException
 
 def startWebDriver(user_agent):
     opts = webdriver.ChromeOptions()
     opts.add_argument("user-agent={}".format(user_agent))
     driver_path = '$CHROME_DRIVER_PATH'
-    driver = webdriver.Chrome(executable_path=driver_path,chrome_options=opts)
+    driver = webdriver.Chrome(executable_path=driver_path,options=opts)
     return driver
 
 def confirmSignIn(driver, isMobile):
@@ -26,7 +26,7 @@ def confirmSignIn(driver, isMobile):
     signin_btn = driver.find_element_by_css_selector('#hb_s' if isMobile else '#id_s')
     try:
         signin_btn.click()
-    except NoSuchElementException: 
+    except ElementNotInteractableException: 
         print("No sign in button")
     time.sleep(3)
 
@@ -38,9 +38,9 @@ def loginToRewards(driver, isMobile):
     user_id_element.send_keys('$USERNAME')
     submit_button_element.click()
 
+    time.sleep(5)
     passwd_element = driver.find_element_by_css_selector('input[type="password"]')
     passwd_element.send_keys('$PASSWORD')
-
     time.sleep(5)
     login_button = driver.find_element_by_css_selector('input[type="submit"]')
     actions = webdriver.ActionChains(driver)
@@ -53,7 +53,7 @@ def forceAlert(base_url, driver):
     driver.get(base_url + trigger_word)
     time.sleep(3)
     try:
-        alert = driver.switch_to_alert()
+        alert = driver.switch_to.alert()
         alert.accept()
     except:
         print("No alert popup.")
@@ -80,9 +80,9 @@ def completeDailySearches(user_agent,num_searches,base_url,isMobile):
     driver.quit()
 
 base_url = 'https://www.bing.com/search?q='
-edge_user_agent = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/52.0.2743.116 Safari/537.36 Edge/15.15063'
-num_pc_searches = 35
+edge_user_agent = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.90 Safari/537.36 Edg/89.0.774.63'
+num_pc_searches = 50
 android_user_agent = "Mozilla/5.0 (Android 6.0.1; Mobile; rv:63.0) Gecko/63.0 Firefox/63.0"
-num_mobile_searches = 25
+num_mobile_searches = 35
 completeDailySearches(edge_user_agent,num_pc_searches,base_url,False);
 completeDailySearches(android_user_agent,num_mobile_searches,base_url,True);
