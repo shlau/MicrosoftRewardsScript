@@ -1,10 +1,9 @@
 # microsoftRewardsScript
-Download Python
+1) Download Python
 
-Download the chromedriver that corresponds with your version of chrome https://chromedriver.chromium.org/
+2) Download the chromedriver that corresponds with your version of chrome https://chromedriver.chromium.org/ and place the driver in a folder with the SearchScript.py.
+   Alternatively, run the rundriverupdate.bat script which will download the latest stable chromedriver.
 
-Place the driver in a folder with the SearchScript.py
+3)Edit SearchScript.py and replace $CHROME_DRIVER_PATH, $USERNAME, $PASSWORD 
 
-Edit SearchScript.py and replace $CHROME_DRIVER_PATH, $USERNAME, $PASSWORD 
-
-Run the script with python (i.e. python SearchScript.py)
+4)Run the script with python (i.e. python SearchScript.py)
