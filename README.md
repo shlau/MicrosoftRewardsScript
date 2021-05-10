@@ -1,4 +1,4 @@
-# microsoftRewardsScript
+# MicrosoftRewardsScript
 1) Download Python
 
 2) Download the chromedriver that corresponds with your version of chrome https://chromedriver.chromium.org/ and place the driver in a folder with the SearchScript.py.
