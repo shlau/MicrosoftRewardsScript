@@ -23,6 +23,11 @@ def confirmSignIn(driver, isMobile):
     driver.get('https://www.bing.com')
     time.sleep(5)
     if(isMobile):
+        try:
+            close_icon = driver.find_element_by_css_selector('.closeIcon')
+            close_icon.click()
+        except:
+            print("no close icon")
         menu_btn = driver.find_element_by_css_selector('#mHamburger')
         menu_btn.click()
         time.sleep(2)
