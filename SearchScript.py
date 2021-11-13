@@ -24,8 +24,10 @@ def confirmSignIn(driver, isMobile):
     time.sleep(5)
     if(isMobile):
         try:
-            close_icon = driver.find_element_by_css_selector('.closeIcon')
-            close_icon.click()
+            close_icon1 = driver.find_element_by_css_selector('.closeIcon')
+            close_icon2 = driver.find_element_by_css_selector('.icon.rms_img')
+            close_icon1.click()
+            close_icon2.click()
         except:
             print("no close icon")
         menu_btn = driver.find_element_by_css_selector('#mHamburger')
