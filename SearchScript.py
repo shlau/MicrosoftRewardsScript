@@ -4,6 +4,7 @@ import requests
 import json
 import random
 from selenium import webdriver
+from selenium.webdriver.common.by import By
 from selenium.common.exceptions import ElementNotInteractableException
 DRIVER_PATH = '$YOUR CHROMEDRIVER PATH e.g. /Users/myname/Documents/MSFTRewards/chromedriver'
 USERNAME = '$YOUR USERNAME'
@@ -24,16 +25,16 @@ def confirmSignIn(driver, isMobile):
     time.sleep(5)
     if(isMobile):
         try:
-            close_icon1 = driver.find_element_by_css_selector('.closeIcon')
-            close_icon2 = driver.find_element_by_css_selector('.icon.rms_img')
+            close_icon1 = driver.find_element(By.CSS_SELECTOR,'.closeIcon')
+            close_icon2 = driver.find_element(By.CSS_SELECTOR,'.icon.rms_img')
             close_icon1.click()
             close_icon2.click()
         except:
             print("no close icon")
-        menu_btn = driver.find_element_by_css_selector('#mHamburger')
+        menu_btn = driver.find_element(By.CSS_SELECTOR,'#mHamburger')
         menu_btn.click()
         time.sleep(2)
-    signin_btn = driver.find_element_by_css_selector('#hb_s' if isMobile else '#id_s')
+    signin_btn = driver.find_element(By.CSS_SELECTOR,'#hb_s' if isMobile else '#id_s')
     try:
         signin_btn.click()
     except ElementNotInteractableException: 
@@ -43,16 +44,16 @@ def confirmSignIn(driver, isMobile):
 def loginToRewards(driver, isMobile):
     login_url = 'https://login.live.com'
     driver.get(login_url)
-    user_id_element = driver.find_element_by_css_selector('input[type="email"]')
-    submit_button_element = driver.find_element_by_css_selector('input[type="submit"]')
+    user_id_element = driver.find_element(By.CSS_SELECTOR,'input[type="email"]')
+    submit_button_element = driver.find_element(By.CSS_SELECTOR,'input[type="submit"]')
     user_id_element.send_keys(USERNAME)
     submit_button_element.click()
 
     time.sleep(5)
-    passwd_element = driver.find_element_by_css_selector('input[type="password"]')
+    passwd_element = driver.find_element(By.CSS_SELECTOR,'input[type="password"]')
     passwd_element.send_keys(PASSWORD)
     time.sleep(5)
-    login_button = driver.find_element_by_css_selector('input[type="submit"]')
+    login_button = driver.find_element(By.CSS_SELECTOR,'input[type="submit"]')
     actions = webdriver.ActionChains(driver)
     actions.move_to_element(login_button).click().perform()
 
